@@ -1,0 +1,18 @@
+{% extends "characters/base.html" %}
+
+{% block body %}
+    <div class="container">
+        <h1>
+            Collections
+            <a href="#">
+                <button type="button" class="btn btn-success">Fetch</button>
+            </a>
+        </h1>
+        <!-- TODO - table of links to file content -->
+        {% for files in files %}
+            <h1>{{ file }}</h1>
+        {% empty %}
+        <p>No files generated yet!</p>
+        {% endfor %}
+    </div>
+{% endblock %}
