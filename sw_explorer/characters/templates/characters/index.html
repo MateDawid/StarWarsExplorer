@@ -4,13 +4,13 @@
     <div class="container">
         <h1>
             Collections
-            <a href="#">
+            <a href="{% url 'fetch' %}">
                 <button type="button" class="btn btn-success">Fetch</button>
             </a>
         </h1>
         <!-- TODO - table of links to file content -->
-        {% for files in files %}
-            <h1>{{ file }}</h1>
+        {% for file in files %}
+            <p>{{ file.filename }}</p>
         {% empty %}
         <p>No files generated yet!</p>
         {% endfor %}
