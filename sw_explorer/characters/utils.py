@@ -41,19 +41,15 @@ class SWAPIConnector:
         return [headers] + rows
 
 
-def get_buffer(file_id, with_name=False):
-    """ Transforms file saved in database as bytes to io.BytesIO buffer """
+def get_buffer(file_id):
+    """ Transforms file saved in database as bytes to io.BytesIO buffer and returns this buffer with filename """
     try:
         data_file = DataFile.objects.get(id=file_id)
     except DataFile.DoesNotExist:
-        if with_name:
-            return None, None
-        return None
+        return None, None
     buffer = io.BytesIO(data_file.file)
     buffer.seek(0)
-    if with_name:
-        return buffer, data_file.filename
-    return buffer
+    return buffer, data_file.filename
 
 
 def format_people_table(table, connector):

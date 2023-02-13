@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime
 import io
+import petl as etl
 
 from django.http import HttpResponseRedirect, FileResponse
 from django.shortcuts import render
@@ -32,8 +33,16 @@ def fetch(request):
 
 
 def download_file(request, file_id):
-    buffer, filename = get_buffer(file_id, with_name=True)
+    buffer, filename = get_buffer(file_id)
     if buffer is None:
         return HttpResponseRedirect(reverse("index"))
     response = FileResponse(buffer, as_attachment=True, filename=filename)
     return response
+
+
+def file_content(request, file_id):
+    buffer, filename = get_buffer(file_id)
+    if buffer is None:
+        return HttpResponseRedirect(reverse("index"))
+    reader = csv.reader(io.TextIOWrapper(buffer, encoding="utf-8"))
+    return render(request, "characters/file_content.html", context={'filename': filename, 'rows': reader})
