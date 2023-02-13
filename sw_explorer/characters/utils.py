@@ -50,5 +50,4 @@ def format_people_table(table, connector):
         .addfield('date', lambda row: datetime.strptime(row.edited, '%Y-%m-%dT%H:%M:%S.%fZ').strftime("%Y-%m-%d"))
         .cutout('edited')
     )
-    print(table)
     return table
