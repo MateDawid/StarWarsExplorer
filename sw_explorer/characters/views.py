@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from .models import DataFile
-from .utils import SWAPIConnector, format_people_table
+from .utils import SWAPIConnector, format_people_table, get_buffer
 
 
 def index(request):
@@ -32,11 +32,8 @@ def fetch(request):
 
 
 def download_file(request, file_id):
-    try:
-        data_file = DataFile.objects.get(id=file_id)
-    except DataFile.DoesNotExist:
+    buffer, filename = get_buffer(file_id, with_name=True)
+    if buffer is None:
         return HttpResponseRedirect(reverse("index"))
-    buffer = io.BytesIO(data_file.file)
-    buffer.seek(0)
-    response = FileResponse(buffer, as_attachment=True, filename=data_file.filename)
+    response = FileResponse(buffer, as_attachment=True, filename=filename)
     return response

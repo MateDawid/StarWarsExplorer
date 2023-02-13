@@ -1,8 +1,11 @@
+import io
 from datetime import datetime
 
 import requests
 from urllib.parse import urljoin
 import petl as etl
+
+from .models import DataFile
 
 
 class SWAPIConnector:
@@ -36,6 +39,21 @@ class SWAPIConnector:
         headers = [header for header in data[0].keys()]
         rows = [[value for value in person.values()] for person in data]
         return [headers] + rows
+
+
+def get_buffer(file_id, with_name=False):
+    """ Transforms file saved in database as bytes to io.BytesIO buffer """
+    try:
+        data_file = DataFile.objects.get(id=file_id)
+    except DataFile.DoesNotExist:
+        if with_name:
+            return None, None
+        return None
+    buffer = io.BytesIO(data_file.file)
+    buffer.seek(0)
+    if with_name:
+        return buffer, data_file.filename
+    return buffer
 
 
 def format_people_table(table, connector):
