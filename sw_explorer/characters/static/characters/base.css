@@ -1,3 +1,8 @@
+body {
+    background-color: #33658A;
+}
+
+/* Container elements */
 .container {
     margin-top: 20px;
 }
@@ -6,16 +11,32 @@
     margin-bottom: 20px;
 }
 
+.container div {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/* Navigation elements */
+.navbar {
+    background-color: #F6AE2D !important;
+
+}
+
 .navbar-brand {
    pointer-events: none;
    cursor: default;
 }
 
 .nav-link:hover {
-    text-decoration: underline; !important;
-}
-.container div {
-    margin-top: auto;
-    margin-bottom: auto;
+    text-decoration: underline !important;
 }
 
+/* File list elements */
+
+.card {
+    background-color: #86BBD8;
+}
+
+.card-body button {
+    margin: 0.25rem 0.125rem;
+}
