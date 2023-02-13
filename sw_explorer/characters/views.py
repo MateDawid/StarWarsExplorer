@@ -3,7 +3,7 @@ from datetime import datetime
 import io
 import petl as etl
 
-from django.http import HttpResponseRedirect, FileResponse
+from django.http import HttpResponseRedirect, FileResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -40,9 +40,24 @@ def download_file(request, file_id):
     return response
 
 
-def file_content(request, file_id):
+def file_rows(request):
+    # Collecting input params
+    file_id = int(request.GET.get("file_id"))
+    start = int(request.GET.get("start") or 0)
+    end = int(request.GET.get("end") or (start + 9))
+    # Reading file content
     buffer, filename = get_buffer(file_id)
     if buffer is None:
-        return HttpResponseRedirect(reverse("index"))
+        return JsonResponse({"rows": []})
     reader = csv.reader(io.TextIOWrapper(buffer, encoding="utf-8"))
-    return render(request, "characters/file_content.html", context={'filename': filename, 'rows': reader})
+    rows = [row for row in reader]
+    # Returning sliced rows
+    return JsonResponse({"rows": rows[start:end + 1]})
+
+
+def file_content(request, file_id):
+    try:
+        data_file = DataFile.objects.get(id=file_id)
+    except DataFile.DoesNotExist:
+        return HttpResponseRedirect(reverse("index"))
+    return render(request, "characters/file_content.html", context={'file_id': file_id, 'filename': data_file.filename})
