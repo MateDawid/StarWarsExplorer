@@ -2,7 +2,7 @@ import csv
 from datetime import datetime
 import io
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, FileResponse
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -11,7 +11,7 @@ from .utils import SWAPIConnector
 
 
 def index(request):
-    files = DataFile.objects.all()
+    files = DataFile.objects.all().order_by('-date_created')
     return render(request, "characters/index.html", context={'files': files})
 
 
@@ -26,6 +26,17 @@ def fetch(request):
         bytes_buffer = io.BytesIO(str_buffer.getvalue().encode('utf-8'))
         DataFile.objects.create(
             file=bytes_buffer.read(),
-            filename=f'{datetime.now()}.csv',
+            filename=f'{datetime.now().strftime("%Y-%m-%d_%H:%M:%S")}.csv',
         )
     return HttpResponseRedirect(reverse("index"))
+
+
+def download_file(request, file_id):
+    try:
+        data_file = DataFile.objects.get(id=file_id)
+    except DataFile.DoesNotExist:
+        return HttpResponseRedirect(reverse("index"))
+    buffer = io.BytesIO(data_file.file)
+    buffer.seek(0)
+    response = FileResponse(buffer, as_attachment=True, filename=data_file.filename)
+    return response

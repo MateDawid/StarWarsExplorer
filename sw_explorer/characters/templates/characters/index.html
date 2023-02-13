@@ -8,11 +8,31 @@
                 <button type="button" class="btn btn-success">Fetch</button>
             </a>
         </h1>
-        <!-- TODO - table of links to file content -->
         {% for file in files %}
-            <p>{{ file.filename }}</p>
+            <div class="card mb-3">
+              <div class="row no-gutters justify-content-start">
+                  <div class="col-md-3 align-self-center text-center">
+                      <p>{{ file.filename }}</p>
+                  </div>
+                  <div class="col-md-9">
+                      <div class="card-body">
+                          <a href="{% url 'download_file' file.id %}">
+                              <button type="button" class="btn btn-outline-success">Download</button>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+            </div>
         {% empty %}
-        <p>No files generated yet!</p>
+            <div class="card mb-3">
+              <div class="row no-gutters justify-content-start">
+                  <div class="col-md-12">
+                      <div class="card-body">
+                          <p>No file generated yet. Let's <a href="{% url 'fetch' %}"> fetch</a> one!</p>
+                      </div>
+                  </div>
+              </div>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}

@@ -2,6 +2,10 @@
     margin-top: 20px;
 }
 
+.container h1 {
+    margin-bottom: 20px;
+}
+
 .navbar-brand {
    pointer-events: none;
    cursor: default;
@@ -10,3 +14,8 @@
 .nav-link:hover {
     text-decoration: underline; !important;
 }
+.container div {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
