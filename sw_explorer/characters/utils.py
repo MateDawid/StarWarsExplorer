@@ -45,9 +45,10 @@ def format_people_table(table, connector):
         etl.wrap(table)
         .cut(*headers)
         .rename('homeworld', 'homeworld_url')
-        .addfield('homeworld', lambda row: planets.get(row.homeworld_url))
+        .addfield('homeworld', lambda row: planets.get(row.homeworld_url, {}).get('name'))
         .cutout('homeworld_url')
         .addfield('date', lambda row: datetime.strptime(row.edited, '%Y-%m-%dT%H:%M:%S.%fZ').strftime("%Y-%m-%d"))
         .cutout('edited')
     )
+    print(table)
     return table
