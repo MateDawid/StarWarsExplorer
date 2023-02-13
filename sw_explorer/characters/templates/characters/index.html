@@ -11,13 +11,13 @@
         {% for file in files %}
             <div class="card mb-3">
               <div class="row no-gutters justify-content-start">
-                  <div class="col-md-3 align-self-center text-center">
+                  <div class="col-md-6 align-self-center text-center">
                       <b>{{ file.filename }}</b>
                   </div>
-                  <div class="col-md-9">
+                  <div class="col-md-6 text-center">
                       <div class="card-body">
                           <a href="{% url 'download_file' file.id %}" role="button" class="btn btn-warning">Download</a>
-                          <a href="{% url 'file_content' file.id %}" role="button" class="btn btn-primary">File content</a>
+                          <a href="{% url 'file_content' file.id %}" role="button" class="btn btn-dark">File content</a>
                       </div>
                   </div>
               </div>
