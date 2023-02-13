@@ -1,5 +1,8 @@
+from datetime import datetime
+
 import requests
 from urllib.parse import urljoin
+import petl as etl
 
 
 class SWAPIConnector:
@@ -33,3 +36,18 @@ class SWAPIConnector:
         headers = [header for header in data[0].keys()]
         rows = [[value for value in person.values()] for person in data]
         return [headers] + rows
+
+
+def format_people_table(table, connector):
+    headers = ['name', 'height', 'mass', 'hair_color', 'skin_color', 'eye_color', 'birth_year', 'gender', 'homeworld', 'edited']
+    planets = {planet.get('url'): planet for planet in connector.get_all_pages('planets')}
+    table = (
+        etl.wrap(table)
+        .cut(*headers)
+        .rename('homeworld', 'homeworld_url')
+        .addfield('homeworld', lambda row: planets.get(row.homeworld_url))
+        .cutout('homeworld_url')
+        .addfield('date', lambda row: datetime.strptime(row.edited, '%Y-%m-%dT%H:%M:%S.%fZ').strftime("%Y-%m-%d"))
+        .cutout('edited')
+    )
+    return table

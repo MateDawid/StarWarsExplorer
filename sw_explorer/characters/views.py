@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from .models import DataFile
-from .utils import SWAPIConnector
+from .utils import SWAPIConnector, format_people_table
 
 
 def index(request):
@@ -18,7 +18,7 @@ def index(request):
 def fetch(request):
     connector = SWAPIConnector()
     table = connector.get_as_table('people')
-    # Saving binary csv in database
+    table = format_people_table(table, connector)
     if table:
         str_buffer = io.StringIO()
         writer = csv.writer(str_buffer)
