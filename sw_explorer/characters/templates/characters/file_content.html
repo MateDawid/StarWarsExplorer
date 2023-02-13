@@ -3,11 +3,11 @@
 {% block body %}
     <div class="container">
         <h1>{{ filename }}</h1>
-        <table class="table table-striped table-dark table-bordered">
+        <table class="table table-striped table-bordered table-hover">
           <thead>
               {% for row in rows %}
                 {% if forloop.first  %}
-                    <tr>
+                    <tr class="table-info">
                         {% for header in row %}
                             <th scope="col">{{ header }}</th>
                         {% endfor %}
@@ -15,7 +15,7 @@
                     </thead>
                     <tbody>
                 {% else %}
-                    <tr>
+                    <tr class="table-secondary">
                         {% for value in row %}
                             <td>{{ value }}</td>
                         {% endfor %}
