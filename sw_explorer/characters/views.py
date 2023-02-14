@@ -1,4 +1,5 @@
 import csv
+import json
 from datetime import datetime
 import io
 import petl as etl
@@ -6,6 +7,7 @@ import petl as etl
 from django.http import HttpResponseRedirect, FileResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import DataFile
 from .utils import SWAPIConnector, format_people_table, get_buffer
@@ -61,6 +63,22 @@ def file_content(request, file_id):
     except DataFile.DoesNotExist:
         return HttpResponseRedirect(reverse("index"))
     return render(request, "characters/file_content.html", context={'file_id': file_id, 'filename': data_file.filename})
+
+
+@csrf_exempt
+def value_count_table(request):
+    if request.method != 'POST':
+        return JsonResponse({"headers": [], 'rows': []})
+    body_decoded = request.body.decode('utf-8')
+    data = json.loads(body_decoded)
+    file_id = int(data.get("file_id"))
+    # Reading file content
+    buffer, filename = get_buffer(file_id)
+    if buffer is None:
+        return JsonResponse({"headers": [], 'rows': []})
+    reader = csv.reader(io.TextIOWrapper(buffer, encoding="utf-8"))
+    rows = [row for row in reader]
+    return JsonResponse({"headers": [], 'rows': rows})
 
 
 def value_count(request, file_id):
