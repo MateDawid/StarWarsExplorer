@@ -1,7 +1,7 @@
 {% extends "characters/base.html" %}
 {% load static %}
 
-{% block title %} {{filename}} {% endblock title %}
+{% block title %} File Content: {{filename}} {% endblock title %}
 {% block scripts %}
     <script src="{% static 'characters/js/file_content.js' %}"></script>
 {% endblock scripts %}

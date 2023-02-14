@@ -1,7 +1,7 @@
 {% extends "characters/base.html" %}
 {% load static %}
 
-{% block title %} filename {% endblock title %}
+{% block title %} Value Count: {{ filename }} {% endblock title %}
 {% block scripts %}
     <script src="{% static 'characters/js/value_count.js' %}"></script>
 {% endblock scripts %}
