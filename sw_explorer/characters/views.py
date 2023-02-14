@@ -61,3 +61,11 @@ def file_content(request, file_id):
     except DataFile.DoesNotExist:
         return HttpResponseRedirect(reverse("index"))
     return render(request, "characters/file_content.html", context={'file_id': file_id, 'filename': data_file.filename})
+
+
+def value_count(request, file_id):
+    try:
+        data_file = DataFile.objects.get(id=file_id)
+    except DataFile.DoesNotExist:
+        return HttpResponseRedirect(reverse("index"))
+    return render(request, "characters/value_count.html", context={'file_id': file_id, 'filename': data_file.filename})

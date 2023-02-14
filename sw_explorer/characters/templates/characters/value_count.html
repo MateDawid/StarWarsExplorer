@@ -1,0 +1,19 @@
+{% extends "characters/base.html" %}
+{% load static %}
+
+{% block title %} filename {% endblock title %}
+{% block scripts %}
+    <script src="{% static 'characters/js/value_count.js' %}"></script>
+{% endblock scripts %}
+{% block body %}
+    <div class="container">
+        <h1 id="filename" data-file-id="{{ file_id }}">{{ filename }}</h1>
+        <table class="table table-striped table-bordered table-hover">
+          <thead>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+    </div>
+
+{% endblock %}

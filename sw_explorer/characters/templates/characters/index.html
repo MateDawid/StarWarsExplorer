@@ -18,6 +18,7 @@
                       <div class="card-body">
                           <a href="{% url 'download_file' file.id %}" role="button" class="btn btn-warning">Download</a>
                           <a href="{% url 'file_content' file.id %}" role="button" class="btn btn-dark">File content</a>
+                          <a href="{% url 'value_count' file.id %}" role="button" class="btn btn-light">Value count</a>
                       </div>
                   </div>
               </div>
