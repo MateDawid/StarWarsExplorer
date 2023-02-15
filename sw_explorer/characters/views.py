@@ -52,7 +52,7 @@ def file_rows(request):
     if buffer is None:
         return JsonResponse({"rows": []})
     reader = csv.reader(io.TextIOWrapper(buffer, encoding="utf-8"))
-    rows = [row for row in reader]
+    rows = [row[:-1] for row in reader]
     # Returning sliced rows
     return JsonResponse({"rows": rows[start:end + 1]})
 
