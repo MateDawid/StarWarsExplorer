@@ -24,13 +24,11 @@ To install and run app you will need to:
 * Clone this repository to your computer or unpack .zip file in chosen directory,
 * Run IDE or command line,
 * Command in IDE to install demanded packages:
-> pip install -r requirements.txt
-* Go to project directory
-> cd **{your_directory}**/sw_explorer
+> pip install -r **{your_directory}**/requirements.txt
 * Run database migrations
-> python manage.py migrate
+> python **{your_directory}**/sw_explorer/manage.py migrate
 * Run local server
-> python manage.py runserver
+> python **{your_directory}**/sw_explorer/manage.py runserver
 * Go to  http://127.0.0.1:8000/ in your browser
 
 ## Sections
