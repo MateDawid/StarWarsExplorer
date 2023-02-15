@@ -72,12 +72,18 @@ def value_count_table(request):
     body_decoded = request.body.decode('utf-8')
     data = json.loads(body_decoded)
     file_id = int(data.get("file_id"))
+    selected_headers = data.get("headers")
     # Reading file content
     buffer, filename = get_buffer(file_id)
     if buffer is None:
         return JsonResponse({"buttons": [], 'rows': []})
     reader = csv.reader(io.TextIOWrapper(buffer, encoding="utf-8"))
-    return JsonResponse({"buttons": next(reader), 'rows': []})
+    csv_data = [row for row in reader]
+    # Transforming with petl
+    table = etl.wrap(csv_data)
+    if selected_headers:
+        table = table.cut(*selected_headers)
+    return JsonResponse({"buttons": csv_data[0], 'rows': [row for row in table]})
 
 
 def value_count(request, file_id):

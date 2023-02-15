@@ -17,6 +17,10 @@ body {
     margin-bottom: auto;
 }
 
+.container .btn-group {
+    margin-bottom: 20px; !important
+}
+
 /* Navigation elements */
 .navbar {
     background-color: #F6AE2D !important;
