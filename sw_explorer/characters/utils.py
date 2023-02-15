@@ -53,7 +53,7 @@ def get_buffer(file_id):
 
 
 def format_people_table(table, connector):
-    headers = ['name', 'height', 'mass', 'hair_color', 'skin_color', 'eye_color', 'birth_year', 'gender', 'homeworld', 'edited']
+    headers = ['name', 'height', 'mass', 'hair_color', 'skin_color', 'eye_color', 'birth_year', 'gender', 'homeworld', 'edited', 'url']
     planets = {planet.get('url'): planet for planet in connector.get_all_pages('planets')}
     table = (
         etl.wrap(table)
@@ -63,5 +63,7 @@ def format_people_table(table, connector):
         .cutout('homeworld_url')
         .addfield('date', lambda row: datetime.strptime(row.edited, '%Y-%m-%dT%H:%M:%S.%fZ').strftime("%Y-%m-%d"))
         .cutout('edited')
+        .addfield('id', lambda row: int(row.url.split('/')[-2]) if row.url.endswith('/') else int(row.url.split('/')[-1]))
+        .cutout('url')
     )
     return table

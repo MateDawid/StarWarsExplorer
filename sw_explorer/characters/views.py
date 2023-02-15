@@ -79,11 +79,34 @@ def value_count_table(request):
         return JsonResponse({"buttons": [], 'rows': []})
     reader = csv.reader(io.TextIOWrapper(buffer, encoding="utf-8"))
     csv_data = [row for row in reader]
+    buttons = csv_data[0].copy()
+    buttons.remove('id')
     # Transforming with petl
-    table = etl.wrap(csv_data)
     if selected_headers:
-        table = table.cut(*selected_headers)
-    return JsonResponse({"buttons": csv_data[0], 'rows': [row for row in table]})
+        table_columns = selected_headers + ['id']
+        count_columns = selected_headers
+    else:
+        table_columns = buttons + ['id']
+        count_columns = buttons
+    count_table = (
+        etl.wrap(csv_data)
+        .valuecounts(*count_columns)
+    )
+    data_table = (
+        etl.wrap(csv_data)
+        .cut(*table_columns)
+    )
+    final_table = (
+        etl.join(data_table, count_table, key=count_columns)
+        .cutout('frequency')
+        .rename('id', 'str_id')
+        .addfield('id', lambda row: int(row.str_id))
+        .cutout('str_id')
+        .sort('id')
+        .cutout('id')
+    )
+
+    return JsonResponse({"buttons": buttons, 'rows': [row for row in final_table]})
 
 
 def value_count(request, file_id):
