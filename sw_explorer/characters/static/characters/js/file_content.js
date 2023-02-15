@@ -8,7 +8,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function load() {
     const start = counter;
-    const end = start + quantity - 1;
+    let end = start + quantity - 1;
+    // Add one more on init because of table headers
+    if (start == 0) {
+        end += 1;
+    }
     const file_id = document.querySelector('#filename').dataset.fileId
     counter = end + 1;
     fetch(`/file_rows?file_id=${file_id}&start=${start}&end=${end}`)
