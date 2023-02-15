@@ -68,17 +68,16 @@ def file_content(request, file_id):
 @csrf_exempt
 def value_count_table(request):
     if request.method != 'POST':
-        return JsonResponse({"headers": [], 'rows': []})
+        return JsonResponse({"buttons": [], 'rows': []})
     body_decoded = request.body.decode('utf-8')
     data = json.loads(body_decoded)
     file_id = int(data.get("file_id"))
     # Reading file content
     buffer, filename = get_buffer(file_id)
     if buffer is None:
-        return JsonResponse({"headers": [], 'rows': []})
+        return JsonResponse({"buttons": [], 'rows': []})
     reader = csv.reader(io.TextIOWrapper(buffer, encoding="utf-8"))
-    rows = [row for row in reader]
-    return JsonResponse({"headers": [], 'rows': rows})
+    return JsonResponse({"buttons": next(reader), 'rows': []})
 
 
 def value_count(request, file_id):
