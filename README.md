@@ -10,7 +10,7 @@ Django application collecting, manipulating and displaying data collected from [
 ## Table of contents
 * [Technologies](#technologies)
 * [Setup](#setup)
-* [Features](#features)
+* [Sections](#sections)
 * [Contact](#contact)
 
 ## Technologies
